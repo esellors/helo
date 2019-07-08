@@ -3,7 +3,8 @@ const express = require('express');
 const massive = require('massive');
 const session = require('express-session');
 const app = express();
-const controller = require('./controller');
+const ac = require('./controllers/authController');
+const pc = require('./controllers/postsController');
 
 const {SERVER_PORT, DATABASE_STRING, SESSION_SECRET} = process.env;
 
@@ -28,8 +29,11 @@ massive(DATABASE_STRING).then(db => {
    console.log('Database linked');
 });
 
-app.post('/auth/register', controller.register);
-app.post('/auth/login', controller.login);
-app.post('/auth/logout', controller.logout);
+app.post('/auth/register', ac.register);
+app.post('/auth/login', ac.login);
+app.post('/auth/logout', ac.logout);
+
+app.get('/posts/getAll/:userId/:showOwnBool', pc.getAll);
+app.post('/posts/getAll/:userId/:showOwnBool', pc.getAll);
 
 app.listen(SERVER_PORT, () => console.log(`Server listening on ${SERVER_PORT}`));
