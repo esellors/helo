@@ -9,7 +9,7 @@ export default (
    <Switch>
       <Route component={Auth} exact path='/' />
       <Route component={Dashboard} path='/dashboard' />
-      <Route component={Post} path='/post/:postid' />
+      <Route component={Post} path='/post/:postId' />
       <Route component={Form} path='/new' />
    </Switch>
 )

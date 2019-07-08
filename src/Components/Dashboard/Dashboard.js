@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import {Link} from 'react-router-dom';
 import Axios from 'axios';
 
 class Dashboard extends Component {
@@ -21,27 +22,15 @@ class Dashboard extends Component {
       const {userId} = this.props;
       const {showOwnPosts, search} = this.state;
 
-      if (search) { // get posts with search
-         Axios
-            .post(`/posts/getAll/${userId}/${showOwnPosts}`, {search})
-            .then(res => {
-               this.setState({ 
-                  search: '',
-                  posts: res.data
-               });
-            })
-            .catch(err => {
-               console.log(err.request);
+      Axios
+         .get(`/posts/getAll/${userId}/${showOwnPosts}?search=${search}`)
+         .then(res => {
+            this.setState({ 
+               search: '',
+               posts: res.data
             });
-
-      } else { // get posts without search
-         Axios
-            .get(`/posts/getAll/${userId}/${showOwnPosts}`)
-            .then(res => this.setState({ posts: res.data }))
-            .catch(err => {
-               console.log(err.request);
-            });
-      }   
+         })
+         .catch(err => console.log(err.request));
    }
    handleInputChange(e) {
       const {name, value} = e.target;
@@ -55,7 +44,7 @@ class Dashboard extends Component {
          })};
    }
    handleSearchReset() {
-      this.setState({ search: '' });
+      this.setState({ search: '' }, () => this.handleGetPosts());
    }
    render() {
       
@@ -64,13 +53,15 @@ class Dashboard extends Component {
       const postsMapped = posts.length > 0
          ? posts.map(post => {
             return (
-               <div key={post.id}>
-                  <p>{post.title}</p>
-                  <span>
-                     <p>by {post.username}</p>
-                     <img src={post.profile_pic} alt='User Post' />
-                  </span>
-               </div>
+               <Link to={`/post/${post.id}`} key={post.id}>
+                  <div>
+                     <p>{post.title}</p>
+                     <span>
+                        <p>by {post.username}</p>
+                        <img src={post.profile_pic} alt='User Post' />
+                     </span>
+                  </div>
+               </Link>
             )})
          : 'No posts to show'
 

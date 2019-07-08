@@ -31,10 +31,7 @@ class Auth extends Component {
             this.props.updateUser(res.data.id, res.data.username, res.data.profilePic);
             this.props.history.push('/dashboard');
          })
-         .catch(err => {
-            console.log(err.request);
-            alert(err.request.response);
-         });
+         .catch(err => console.log(err.request));
    }
    handleRegister() {
       const {username, password} = this.state;
@@ -48,10 +45,7 @@ class Auth extends Component {
             this.props.updateUser(res.data.id, res.data.username, res.data.profilePic);
             this.props.history.push('/dashboard');
          })
-         .catch(err => {
-            console.log(err.request);
-            alert(err.request.response);
-         });
+         .catch(err => console.log(err.request));
    }
    render() {
       return (

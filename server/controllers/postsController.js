@@ -1,7 +1,7 @@
 module.exports = {
    getAll: async function(req, res) {
       const {userId, showOwnBool} = req.params;
-      const {search} = req.body;
+      const {search} = req.query;
 
       let posts = [];
 
@@ -24,5 +24,14 @@ module.exports = {
       }
 
       res.status(200).json(posts);
+   },
+   getOne: async function (req, res) {
+      const postId = parseInt(req.params.postId);
+      
+      const db = req.app.get('db');
+
+      const post = await db.posts.get_one(postId);
+
+      res.status(200).json(post[0]);
    }
 };
