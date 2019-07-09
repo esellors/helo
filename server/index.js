@@ -32,6 +32,7 @@ massive(DATABASE_STRING).then(db => {
 app.get('/api/auth/me', ac.getSession);
 app.post('/api/auth/register', ac.register);
 app.post('/api/auth/login', ac.login);
+app.put('/api/auth/updateusername/:username', ac.updateUsername)
 app.post('/api/auth/logout', ac.logout);
 
 app.get('/api/posts/getAll/:showOwnBool', pc.getAll);

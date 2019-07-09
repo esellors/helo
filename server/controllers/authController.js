@@ -80,6 +80,14 @@ module.exports = {
 
       res.status(200).json(userInfo);
    },
+   updateUsername: async function(req, res) {
+      const {username} = req.params;
+      const db = req.app.get('db');
+
+      await db.auth.update_username(req.session.user.id, username);
+
+      res.sendStatus(200);
+   },
    logout: function(req, res) {
       req.session.destroy();
       res.sendStatus(200);
