@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import Axios from 'axios';
 
@@ -19,11 +18,10 @@ class Dashboard extends Component {
       this.handleGetPosts();
    }
    handleGetPosts() {
-      const {userId} = this.props;
       const {showOwnPosts, search} = this.state;
 
       Axios
-         .get(`/posts/getAll/${userId}/${showOwnPosts}?search=${search}`)
+         .get(`/api/posts/getAll/${showOwnPosts}?search=${search}`)
          .then(res => {
             this.setState({ 
                search: '',
@@ -90,10 +88,4 @@ class Dashboard extends Component {
    }
 }
 
-const mapStateToProps = reduxState => {
-   return {
-      userId: reduxState.id
-   }
-}
-
-export default connect(mapStateToProps)(Dashboard)
+export default Dashboard

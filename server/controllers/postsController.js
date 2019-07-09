@@ -1,17 +1,18 @@
 module.exports = {
    getAll: async function(req, res) {
-      const {userId, showOwnBool} = req.params;
+      const {id} = req.session.user;
+      const {showOwnBool} = req.params;
       const {search} = req.query;
 
       let posts = [];
 
       const db = req.app.get('db');
 
-      // get all posts
+      // retrieve posts
       if (showOwnBool === 'true') {
          posts = await db.posts.get_all_with_user();
       } else {
-         posts = await db.posts.get_all_without_user(userId);
+         posts = await db.posts.get_all_without_user(id);
       }
 
       // filter retrieved posts if search was provided
@@ -35,12 +36,12 @@ module.exports = {
       res.status(200).json(post[0]);
    },
    create: async function(req, res) {
-      const userId = parseInt(req.body.userId);
+      const {id} = req.session.user;
       const {title, img, content} = req.body;
 
       const db = req.app.get('db');
 
-      await db.posts.create(userId, title, img, content);
+      await db.posts.create(id, title, img, content);
 
       res.sendStatus(200);
    }

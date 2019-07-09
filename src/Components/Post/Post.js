@@ -12,7 +12,7 @@ class Post extends Component {
       const {postId} = this.props.match.params;
 
       Axios
-         .get(`/posts/getOne/${postId}`)
+         .get(`/api/posts/getOne/${postId}`)
          .then(res => this.setState({ post: res.data }))
          .catch(err => console.log(err.request));
    }

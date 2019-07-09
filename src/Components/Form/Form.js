@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {connect} from 'react-redux';
 import Axios from 'axios';
 
 class Form extends Component {
@@ -19,15 +18,14 @@ class Form extends Component {
    }
    handleSubmit() {
       const {title, img, content} = this.state;
-      const {userId} = this.props;
 
       // validate all fields filled out
       if (!title || !img || !content) return alert('One or more fields are blank')
       
-      const post = {userId, title, img, content};
+      const post = {title, img, content};
 
       Axios
-         .post('/posts/create', post)
+         .post('/api/posts/create', post)
          .then(() => this.props.history.push('/dashboard'))
          .catch(err => console.log(err.request));
    }
@@ -66,10 +64,4 @@ class Form extends Component {
    }
 }
 
-const mapStateToProps = reduxState => {
-   return {
-      userId: reduxState.id
-   }
-}
-
-export default connect(mapStateToProps)(Form)
+export default Form

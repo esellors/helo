@@ -9,17 +9,20 @@ class Nav extends Component {
       super(props);
       this.handleLogout = this.handleLogout.bind(this);
    }
+   componentDidMount() {
+      Axios
+         .get('/api/auth/me')
+         .then(res => this.props.updateUser(res.data.username, res.data.profilePic))
+         .catch(err => console.log(err.request));
+   }
    handleLogout() {
       Axios
-         .post('/auth/logout')
+         .post('/api/auth/logout')
          .then(() => {
-            this.props.updateUser('','','');
+            this.props.updateUser('','');
             this.props.history.push('/');
          })
-         .catch(err => {
-            console.log(err.request);
-            alert(err.request.response);
-         });
+         .catch(err => console.log(err.request));
    }
    render() {
       return (

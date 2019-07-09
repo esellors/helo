@@ -1,6 +1,26 @@
 const bcrypt = require('bcryptjs');
 
 module.exports = {
+   getSession: async function(req, res) {
+
+      // if no current session, return response
+      if (!req.session.user) return res.sendStatus(204);
+
+      // if current session, get and return user info
+      const {id} = req.session.user;
+
+      const db = req.app.get('db');
+
+      const foundUserRes = await db.auth.get_session(id);
+      const foundUser = foundUserRes[0];
+
+      const userInfo = {
+         username: foundUser.username,
+         profilePic: foundUser.profile_pic
+      };
+
+      res.status(200).json(userInfo);
+   },
    register: async function(req, res) {
       const {username, password} = req.body;
       const db = req.app.get('db');
@@ -23,14 +43,15 @@ module.exports = {
       const newUserRes = await db.auth.register(username, hash, profilePic);
       const newUser = newUserRes[0];
 
-      // add new user to session and return session
-      req.session.user = {
-         id: newUser.id,
+      // add new user to session and return user info
+      req.session.user = { id: newUser.id };
+
+      const userInfo = {
          username: newUser.username,
          profilePic: newUser.profile_pic
       };
 
-      res.status(200).json(req.session.user);
+      res.status(200).json(userInfo);
    },
    login: async function(req, res) {
       const {username, password} = req.body;
@@ -47,18 +68,17 @@ module.exports = {
       // compare saved hash w/ user's pw
       const isAuthenticated = bcrypt.compareSync(password, foundUser.password);
 
-      if (!isAuthenticated) {
-         return res.status(401).send('Password incorrect');
-      }
+      if (!isAuthenticated) return res.status(401).send('Password incorrect');
 
-      // if passwords match, create and return session
-      req.session.user = {
-         id: foundUser.id,
+      // if passwords match, create session and return user info
+      req.session.user = { id: foundUser.id };
+
+      const userInfo = {
          username: foundUser.username,
          profilePic: foundUser.profile_pic
       };
 
-      res.status(200).json(req.session.user);
+      res.status(200).json(userInfo);
    },
    logout: function(req, res) {
       req.session.destroy();

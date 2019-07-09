@@ -1,16 +1,15 @@
 const initialState = {
-   id: '',
    username: '',
    profilePic: ''
 };
 
 const UPDATE_USER = 'UPDATE_USER';
 
-export function updateUser(id, username, profilePic) {
-   
+export function updateUser(username, profilePic) {
+
    return {
       type: UPDATE_USER,
-      payload: {id, username, profilePic}
+      payload: {username, profilePic}
    }
 }
 
@@ -19,11 +18,10 @@ export default function reducer(state = initialState, action) {
 
    switch(type) {
       case UPDATE_USER:
-         const {id, username, profilePic} = payload;
+         const {username, profilePic} = payload;
 
          return {
             ...state,
-            id,
             username,
             profilePic
          }

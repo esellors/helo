@@ -29,12 +29,13 @@ massive(DATABASE_STRING).then(db => {
    console.log('Database linked');
 });
 
-app.post('/auth/register', ac.register);
-app.post('/auth/login', ac.login);
-app.post('/auth/logout', ac.logout);
+app.get('/api/auth/me', ac.getSession);
+app.post('/api/auth/register', ac.register);
+app.post('/api/auth/login', ac.login);
+app.post('/api/auth/logout', ac.logout);
 
-app.get('/posts/getAll/:userId/:showOwnBool', pc.getAll);
-app.get('/posts/getOne/:postId', pc.getOne);
-app.post('/posts/create', pc.create);
+app.get('/api/posts/getAll/:showOwnBool', pc.getAll);
+app.get('/api/posts/getOne/:postId', pc.getOne);
+app.post('/api/posts/create', pc.create);
 
 app.listen(SERVER_PORT, () => console.log(`Server listening on ${SERVER_PORT}`));

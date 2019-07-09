@@ -25,10 +25,9 @@ class Auth extends Component {
       if (!username || !password) return alert('One or more fields are blank');
 
       Axios
-         .post('/auth/login', {username, password})
+         .post('/api/auth/login', {username, password})
          .then(res => {
-            console.log(res.data)
-            this.props.updateUser(res.data.id, res.data.username, res.data.profilePic);
+            this.props.updateUser(res.data.username, res.data.profilePic);
             this.props.history.push('/dashboard');
          })
          .catch(err => console.log(err.request));
@@ -40,9 +39,9 @@ class Auth extends Component {
       if (!username || !password) return alert('One or more fields are blank');
 
       Axios
-         .post('/auth/register', {username, password})
+         .post('/api/auth/register', {username, password})
          .then(res => {
-            this.props.updateUser(res.data.id, res.data.username, res.data.profilePic);
+            this.props.updateUser(res.data.username, res.data.profilePic);
             this.props.history.push('/dashboard');
          })
          .catch(err => console.log(err.request));
