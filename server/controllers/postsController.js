@@ -25,7 +25,7 @@ module.exports = {
 
       res.status(200).json(posts);
    },
-   getOne: async function (req, res) {
+   getOne: async function(req, res) {
       const postId = parseInt(req.params.postId);
       
       const db = req.app.get('db');
@@ -33,5 +33,15 @@ module.exports = {
       const post = await db.posts.get_one(postId);
 
       res.status(200).json(post[0]);
+   },
+   create: async function(req, res) {
+      const userId = parseInt(req.body.userId);
+      const {title, img, content} = req.body;
+
+      const db = req.app.get('db');
+
+      await db.posts.create(userId, title, img, content);
+
+      res.sendStatus(200);
    }
 };

@@ -34,6 +34,7 @@ app.post('/auth/login', ac.login);
 app.post('/auth/logout', ac.logout);
 
 app.get('/posts/getAll/:userId/:showOwnBool', pc.getAll);
-app.get('/posts/getOne/:postId', pc.getOne)
+app.get('/posts/getOne/:postId', pc.getOne);
+app.post('/posts/create', pc.create);
 
 app.listen(SERVER_PORT, () => console.log(`Server listening on ${SERVER_PORT}`));
